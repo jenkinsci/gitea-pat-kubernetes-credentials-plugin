@@ -15,6 +15,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,56 +48,43 @@ public class GithubAppCredentialsConvertor extends SecretToCredentialConverter {
                 // privateKey
                 privateKeySecret
         );
-        SecretUtils.getOptionalSecretData(
-                secret
-                , "apiUri"
-                , "github app credential : failed to retrieve optional parameter apiUri")
-                .map(apiUriBase64 -> decodeBase64(apiUriBase64, "Not a valid apiUri"))
-                .ifPresent(
-                        gitHubAppCredentials::setApiUri
-                );
-        SecretUtils.getOptionalSecretData(secret
-                , "owner"
-                , "github app credential : failed to retrieve optional parameter owner")
-                .map(ownerBase64 -> decodeBase64(ownerBase64, "Not a valid owner"))
-                .ifPresent(
-                        gitHubAppCredentials::setOwner
-                );
+        Optional<String> apiUrlOptional = SecretUtils.getOptionalSecretData(
+                secret,
+                "apiUri",
+                "github app credential : failed to retrieve optional parameter apiUri");
+        if (apiUrlOptional.isPresent()) {
+            String apiUrl = decodeBase64(apiUrlOptional.get(), "Not a valid apiUri");
+            gitHubAppCredentials.setApiUri(apiUrl);
+        }
+        Optional<String> ownerOptional = SecretUtils.getOptionalSecretData(secret,
+                "owner",
+                "github app credential : failed to retrieve optional parameter owner");
+        if (ownerOptional.isPresent()) {
+            String owner = decodeBase64(ownerOptional.get(), "Not a valid apiUri");
+            gitHubAppCredentials.setOwner(owner);
+        }
         return gitHubAppCredentials;
 
     }
 
-    private String decodeBase64(String base64, String s) {
+    private String decodeBase64(String base64, String errorMessage) throws CredentialsConvertionException {
         try {
-            return SecretUtils.requireNonNull(base64DecodeToString(base64), s);
-        } catch (CredentialsConvertionException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static String base64DecodeToString(String s) {
-        byte[] bytes = base64Decode(s);
-        if (bytes != null) {
-            try {
+            byte[] bytes = Base64.getDecoder().decode(base64);
+            if (bytes != null) {
                 CharsetDecoder decoder = StandardCharsets.UTF_8.newDecoder();
                 decoder.onMalformedInput(CodingErrorAction.REPORT);
                 decoder.onUnmappableCharacter(CodingErrorAction.REPORT);
                 CharBuffer decode = decoder.decode(ByteBuffer.wrap(bytes));
-                return decode.toString();
-            } catch (CharacterCodingException ex) {
-                LOG.log(Level.WARNING, "failed to covert Secret, is this a valid UTF-8 string?  {0}", ex.getMessage());
+                return SecretUtils.requireNonNull(decode.toString(), errorMessage);
+            } else {
+                throw new CredentialsConvertionException(errorMessage);
             }
+
+        } catch (CharacterCodingException e) {
+            LOG.log(Level.WARNING, "failed to decode Secret, is the format valid? {0} {1}", new String[]{base64, e.getMessage()});
+            throw new CredentialsConvertionException(errorMessage, e);
         }
-        return null;
     }
 
 
-    static byte[] base64Decode(String s) {
-        try {
-            return Base64.getDecoder().decode(s);
-        } catch (IllegalArgumentException ex) {
-            LOG.log(Level.WARNING, "failed to base64decode Secret, is the format valid?  {0}", ex.getMessage());
-        }
-        return null;
-    }
 }
