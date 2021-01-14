@@ -12,11 +12,11 @@
 
     <groupId>io.jenkins.plugins</groupId>
     <artifactId>github-app-kubernetes-credentials</artifactId>
-    <version>0.0.1</version>
+    <version>${revision}${changelist}</version>
     <packaging>hpi</packaging>
 
     <properties>
-        <revision>0.0.1</revision>
+        <revision>0.0.2</revision>
         <changelist>-SNAPSHOT</changelist>
         <gitHubRepo>jenkinsci/github-app-kubernetes-credentials-plugin</gitHubRepo>
         <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
@@ -53,7 +53,7 @@
         <connection>scm:git:git://github.com/${gitHubRepo}.git</connection>
         <developerConnection>scm:git:git@github.com:${gitHubRepo}.git</developerConnection>
         <url>https://github.com/${gitHubRepo}</url>
-        <tag>github-app-kubernetes-credentials-0.0.1</tag>
+        <tag>${scmTag}</tag>
     </scm>
 
     <repositories>
