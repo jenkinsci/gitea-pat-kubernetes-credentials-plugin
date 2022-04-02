@@ -6,6 +6,7 @@ import com.cloudbees.jenkins.plugins.kubernetes_credentials_provider.SecretUtils
 import com.cloudbees.plugins.credentials.CredentialsScope;
 import io.fabric8.kubernetes.api.model.Secret;
 import org.jenkinsci.plugin.gitea.credentials.PersonalAccessTokenImpl;
+import org.jenkinsci.plugin.gitea.credentials.PersonalAccessToken;
 import org.jenkinsci.plugins.variant.OptionalExtension;
 
 import java.nio.ByteBuffer;
