@@ -17,7 +17,7 @@ spec:
             checkout scm
             sh 'mvn -B -ntp -Dmaven.test.failure.ignore package'
         }
-//         junit '**/target/surefire-reports/TEST-*.xml'
+        junit '**/target/surefire-reports/TEST-*.xml'
         archiveArtifacts '**/target/*.hpi'
     }
 }
