@@ -5,7 +5,7 @@ import com.cloudbees.jenkins.plugins.kubernetes_credentials_provider.SecretToCre
 import com.cloudbees.jenkins.plugins.kubernetes_credentials_provider.SecretUtils;
 import com.cloudbees.plugins.credentials.CredentialsScope;
 import io.fabric8.kubernetes.api.model.Secret;
-import org.jenkinsci.plugin.gitea.credentials;
+import org.jenkinsci.plugin.gitea.credentials.PersonalAccessTokenImpl;
 import org.jenkinsci.plugins.variant.OptionalExtension;
 
 import java.nio.ByteBuffer;
@@ -20,8 +20,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @OptionalExtension(requirePlugins = {"gitea", "kubernetes-credentials-provider"})
-public class GiteaCredentialsConvertor extends SecretToCredentialConverter {
-    private static final Logger LOG = Logger.getLogger(GiteaCredentialsConvertor.class.getName());
+public class GiteaPATCredentialsConvertor extends SecretToCredentialConverter {
+    private static final Logger LOG = Logger.getLogger(GiteaPATCredentialsConvertor.class.getName());
 
     @Override
     public boolean canConvert(String type) {
@@ -29,11 +29,11 @@ public class GiteaCredentialsConvertor extends SecretToCredentialConverter {
     }
 
     @Override
-    public GiteaCredentials convert(Secret secret) throws CredentialsConvertionException {
+    public GiteaPATCredentials convert(Secret secret) throws CredentialsConvertionException {
         SecretUtils.requireNonNull(secret.getData(), "gitea credential definition contains no data");
         String tokenBase64 = SecretUtils.getNonNullSecretData(secret, "token", "gitea credential is missing token");
         String token = decodeBase64(tokenBase64, "Not a valid token");
-        PersonalAccessTokenImpl giteaCredentials = new PersonalAccessTokenImpl(
+        PersonalAccessTokenImpl giteaPATCredentials = new PersonalAccessTokenImpl(
                 // Scope
                 CredentialsScope.GLOBAL,
                 // ID
@@ -41,9 +41,9 @@ public class GiteaCredentialsConvertor extends SecretToCredentialConverter {
                 // Description
                 SecretUtils.getCredentialDescription(secret),
                 // token
-                token,
+                token
         );
-        return giteaCredentials;
+        return giteaPATCredentials;
 
     }
 

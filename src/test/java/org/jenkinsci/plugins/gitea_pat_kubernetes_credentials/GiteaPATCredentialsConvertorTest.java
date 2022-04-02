@@ -1,9 +1,9 @@
-package org.jenkinsci.plugins.github_app_kubernetes_credentials;
+package org.jenkinsci.plugins.gitea_pat_kubernetes_credentials;
 
 import com.cloudbees.jenkins.plugins.kubernetes_credentials_provider.CredentialsConvertionException;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import org.jenkinsci.plugins.github_branch_source.GitHubAppCredentials;
+import org.jenkinsci.plugin.gitea.credentials.PersonalAccessTokenImpl;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,18 +14,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Fail.fail;
 
 
-public class GithubAppCredentialsConvertorTest {
+public class GiteaPATCredentialsConvertorTest {
 
     @Test
     public void canConvert() {
-        GithubAppCredentialsConvertor convertor = new GithubAppCredentialsConvertor();
+        GiteaPATCredentialsConvertor convertor = new GiteaPATCredentialsConvertor();
         assertThat(convertor.canConvert("githubApp")).isTrue();
         assertThat(convertor.canConvert("something")).isFalse();
     }
 
     @Test
     public void canConvertAValidSecret() throws CredentialsConvertionException, IOException {
-        GithubAppCredentialsConvertor convertor = new GithubAppCredentialsConvertor();
+        GiteaPATCredentialsConvertor convertor = new GiteaPATCredentialsConvertor();
         try (InputStream is = get("valid.yaml")) {
             Secret secret = Serialization.unmarshal(is, Secret.class);
             assertThat(secret).isNotNull();
@@ -43,7 +43,7 @@ public class GithubAppCredentialsConvertorTest {
 
     @Test
     public void canConvertAValidSecretWithNoDescription() throws CredentialsConvertionException, IOException {
-        GithubAppCredentialsConvertor convertor = new GithubAppCredentialsConvertor();
+        GiteaPATCredentialsConvertor convertor = new GiteaPATCredentialsConvertor();
         try (InputStream is = get("valid-no-desc.yaml")) {
             Secret secret = Serialization.unmarshal(is, Secret.class);
             assertThat(secret).isNotNull();
@@ -61,7 +61,7 @@ public class GithubAppCredentialsConvertorTest {
 
     @Test
     public void failsToConvertWhenAppIdMissing() throws Exception {
-        GithubAppCredentialsConvertor convertor = new GithubAppCredentialsConvertor();
+        GiteaPATCredentialsConvertor convertor = new GiteaPATCredentialsConvertor();
         try (InputStream is = get("missing-app-id.yaml")) {
             Secret secret = Serialization.unmarshal(is, Secret.class);
             assertThatThrownBy(() -> convertor.convert(secret))
@@ -73,7 +73,7 @@ public class GithubAppCredentialsConvertorTest {
 
     @Test
     public void failsToConvertWhenPrivateKeyMissing() throws Exception {
-        GithubAppCredentialsConvertor convertor = new GithubAppCredentialsConvertor();
+        GiteaPATCredentialsConvertor convertor = new GiteaPATCredentialsConvertor();
         try (InputStream is = get("missing-private-key.yaml")) {
 
             Secret secret = Serialization.unmarshal(is, Secret.class);
@@ -86,7 +86,7 @@ public class GithubAppCredentialsConvertorTest {
 
 
     private static InputStream get(String resource) {
-        InputStream is = GithubAppCredentialsConvertor.class.getResourceAsStream("GithubAppCredentialsConvertor/" + resource);
+        InputStream is = GiteaPATCredentialsConvertor.class.getResourceAsStream("GiteaPATCredentialsConvertor/" + resource);
         if (is == null) {
             fail("failed to load resource " + resource);
         }
