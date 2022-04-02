@@ -11,17 +11,17 @@
     </parent>
 
     <groupId>io.jenkins.plugins</groupId>
-    <artifactId>github-app-kubernetes-credentials</artifactId>
+    <artifactId>gitea-app-kubernetes-credentials</artifactId>
     <version>${revision}${changelist}</version>
     <packaging>hpi</packaging>
 
     <properties>
         <revision>0.0.2</revision>
         <changelist>-SNAPSHOT</changelist>
-        <gitHubRepo>jenkinsci/github-app-kubernetes-credentials-plugin</gitHubRepo>
+        <gitHubRepo>thisisqasim/gitea-app-kubernetes-credentials-plugin</gitHubRepo>
         <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
         <jenkins.version>2.176.1</jenkins.version>
-        <github-branch-source.version>2.7.1</github-branch-source.version>
+        <gitea.version>1.4.1</gitea.version>
         <java.level>8</java.level>
         <jenkins-test-harness.version>2.34</jenkins-test-harness.version>
         <workflow.version>1.14.2</workflow.version>
@@ -29,9 +29,9 @@
         <kubernetes-credentials-provider.version>0.13</kubernetes-credentials-provider.version>
     </properties>
 
-    <name>Github App Kubernetes Credentials</name>
-    <description>Github App Kubernetes Credentials</description>
-    <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
+    <name>Gitea App Kubernetes Credentials</name>
+    <description>Gitea App Kubernetes Credentials</description>
+    <url>https://github.com/thisisqasim/${project.artifactId}-plugin</url>
     <!-- The default licence for Jenkins OSS Plugins is MIT. Substitute for the applicable one if needed. -->
 
     <licenses>
@@ -100,8 +100,8 @@
 
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>github-branch-source</artifactId>
-            <version>${github-branch-source.version}</version>
+            <artifactId>gitea</artifactId>
+            <version>${gitea.version}</version>
             <optional>true</optional>
         </dependency>
 
