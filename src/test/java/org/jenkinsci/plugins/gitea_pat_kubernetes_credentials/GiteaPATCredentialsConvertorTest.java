@@ -44,14 +44,11 @@ public class GiteaPATCredentialsConvertorTest {
         try (InputStream is = get("valid-no-desc.yaml")) {
             Secret secret = Serialization.unmarshal(is, Secret.class);
             assertThat(secret).isNotNull();
-            GitHubAppCredentials credential = convertor.convert(secret);
+            PersonalAccessToken credential = convertor.convert(secret);
             assertThat(credential).isNotNull();
-            assertThat(credential.getId()).isEqualTo("a-test-githubapp");
+            assertThat(credential.getId()).isEqualTo("a-test-giteapat");
             assertThat(credential.getDescription()).isNullOrEmpty();
-            assertThat(credential.getAppID()).isEqualTo("12");
-            assertThat(credential.getPrivateKey().getPlainText()).isEqualTo("some private key content");
-            assertThat(credential.getApiUri()).isEqualTo("https://host.github/api/v3");
-            assertThat(credential.getOwner()).isEqualTo("owner1");
+            assertThat(credential.getToken()).isEqualTo("0123456789012345678901234567890123456789");
 
         }
     }
@@ -59,11 +56,11 @@ public class GiteaPATCredentialsConvertorTest {
     @Test
     public void failsToConvertWhenAppIdMissing() throws Exception {
         GiteaPATCredentialsConvertor convertor = new GiteaPATCredentialsConvertor();
-        try (InputStream is = get("missing-app-id.yaml")) {
+        try (InputStream is = get("missing-token.yaml")) {
             Secret secret = Serialization.unmarshal(is, Secret.class);
             assertThatThrownBy(() -> convertor.convert(secret))
                     .isInstanceOf(CredentialsConvertionException.class)
-                    .hasMessage("github app credential is missing appId");
+                    .hasMessage("gitea credential is missing token");
 
         }
     }
