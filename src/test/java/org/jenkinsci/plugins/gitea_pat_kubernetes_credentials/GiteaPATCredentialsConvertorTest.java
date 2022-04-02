@@ -4,6 +4,7 @@ import com.cloudbees.jenkins.plugins.kubernetes_credentials_provider.Credentials
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.jenkinsci.plugin.gitea.credentials.PersonalAccessTokenImpl;
+import org.jenkinsci.plugin.gitea.credentials.PersonalAccessToken;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,15 +30,11 @@ public class GiteaPATCredentialsConvertorTest {
         try (InputStream is = get("valid.yaml")) {
             Secret secret = Serialization.unmarshal(is, Secret.class);
             assertThat(secret).isNotNull();
-            GitHubAppCredentials credential = convertor.convert(secret);
+            PersonalAccessToken credential = convertor.convert(secret);
             assertThat(credential).isNotNull();
             assertThat(credential.getId()).isEqualTo("a-test-giteapat");
             assertThat(credential.getDescription()).isEqualTo("credentials from Kubernetes");
-            assertThat(credential.getAppID()).isEqualTo("12");
-            assertThat(credential.getPrivateKey().getPlainText()).isEqualTo("some private key content");
-            assertThat(credential.getApiUri()).isEqualTo("https://host.github/api/v3");
-            assertThat(credential.getOwner()).isEqualTo("owner1");
-
+            assertThat(credential.getToken()).isEqualTo("0123456789012345678901234567890123456789");
         }
     }
 

@@ -33,7 +33,7 @@ public class GiteaPATCredentialsConvertor extends SecretToCredentialConverter {
         SecretUtils.requireNonNull(secret.getData(), "gitea credential definition contains no data");
         String tokenBase64 = SecretUtils.getNonNullSecretData(secret, "token", "gitea credential is missing token");
         String token = decodeBase64(tokenBase64, "Not a valid token");
-        PersonalAccessTokenImpl giteaPATCredentials = new PersonalAccessTokenImpl(
+        PersonalAccessToken giteaPATCredentials = new PersonalAccessTokenImpl(
                 // Scope
                 CredentialsScope.GLOBAL,
                 // ID
