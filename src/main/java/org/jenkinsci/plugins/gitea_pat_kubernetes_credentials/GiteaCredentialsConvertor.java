@@ -1,4 +1,4 @@
-package org.jenkinsci.plugins.gitea_app_kubernetes_credentials;
+package org.jenkinsci.plugins.gitea_pat_kubernetes_credentials;
 
 import com.cloudbees.jenkins.plugins.kubernetes_credentials_provider.CredentialsConvertionException;
 import com.cloudbees.jenkins.plugins.kubernetes_credentials_provider.SecretToCredentialConverter;
@@ -20,48 +20,30 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @OptionalExtension(requirePlugins = {"gitea", "kubernetes-credentials-provider"})
-public class GiteaAppCredentialsConvertor extends SecretToCredentialConverter {
-    private static final Logger LOG = Logger.getLogger(GiteaAppCredentialsConvertor.class.getName());
+public class GiteaCredentialsConvertor extends SecretToCredentialConverter {
+    private static final Logger LOG = Logger.getLogger(GiteaCredentialsConvertor.class.getName());
 
     @Override
     public boolean canConvert(String type) {
-        return "giteaApp".equals(type);
+        return "gitea-pat".equals(type);
     }
 
     @Override
-    public GiteaAppCredentials convert(Secret secret) throws CredentialsConvertionException {
-        SecretUtils.requireNonNull(secret.getData(), "gitea app credential definition contains no data");
-        String appIdBase64 = SecretUtils.getNonNullSecretData(secret, "appId", "gitea app credential is missing appId");
-        String appId = decodeBase64(appIdBase64, "Not a valid appId");
-        hudson.util.Secret privateKeySecret = hudson.util.Secret.fromString(privateKey);
-        GiteaAppCredentials giteaAppCredentials = new GiteaAppCredentials(
+    public GiteaCredentials convert(Secret secret) throws CredentialsConvertionException {
+        SecretUtils.requireNonNull(secret.getData(), "gitea credential definition contains no data");
+        String tokenBase64 = SecretUtils.getNonNullSecretData(secret, "token", "gitea credential is missing token");
+        String token = decodeBase64(tokenBase64, "Not a valid token");
+        PersonalAccessTokenImpl giteaCredentials = new PersonalAccessTokenImpl(
                 // Scope
                 CredentialsScope.GLOBAL,
                 // ID
                 SecretUtils.getCredentialId(secret),
                 // Description
                 SecretUtils.getCredentialDescription(secret),
-                // appId
-                appId,
-                // privateKey
-                privateKeySecret
+                // token
+                token,
         );
-        Optional<String> apiUrlOptional = SecretUtils.getOptionalSecretData(
-                secret,
-                "apiUri",
-                "gitea app credential : failed to retrieve optional parameter apiUri");
-        if (apiUrlOptional.isPresent()) {
-            String apiUrl = decodeBase64(apiUrlOptional.get(), "Not a valid apiUri");
-            giteaAppCredentials.setApiUri(apiUrl);
-        }
-        Optional<String> ownerOptional = SecretUtils.getOptionalSecretData(secret,
-                "owner",
-                "gitea app credential : failed to retrieve optional parameter owner");
-        if (ownerOptional.isPresent()) {
-            String owner = decodeBase64(ownerOptional.get(), "Not a valid apiUri");
-            giteaAppCredentials.setOwner(owner);
-        }
-        return giteaAppCredentials;
+        return giteaCredentials;
 
     }
 
