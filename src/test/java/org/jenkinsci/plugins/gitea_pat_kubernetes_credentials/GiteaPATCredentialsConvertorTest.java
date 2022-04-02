@@ -4,7 +4,6 @@ import com.cloudbees.jenkins.plugins.kubernetes_credentials_provider.Credentials
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.jenkinsci.plugin.gitea.credentials.PersonalAccessTokenImpl;
-import org.jenkinsci.plugin.gitea.credentials.PersonalAccessToken;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -30,7 +29,7 @@ public class GiteaPATCredentialsConvertorTest {
         try (InputStream is = get("valid.yaml")) {
             Secret secret = Serialization.unmarshal(is, Secret.class);
             assertThat(secret).isNotNull();
-            PersonalAccessToken credential = convertor.convert(secret);
+            PersonalAccessTokenImpl credential = convertor.convert(secret);
             assertThat(credential).isNotNull();
             assertThat(credential.getId()).isEqualTo("a-test-giteapat");
             assertThat(credential.getDescription()).isEqualTo("credentials from Kubernetes");
@@ -44,7 +43,7 @@ public class GiteaPATCredentialsConvertorTest {
         try (InputStream is = get("valid-no-desc.yaml")) {
             Secret secret = Serialization.unmarshal(is, Secret.class);
             assertThat(secret).isNotNull();
-            PersonalAccessToken credential = convertor.convert(secret);
+            PersonalAccessTokenImpl credential = convertor.convert(secret);
             assertThat(credential).isNotNull();
             assertThat(credential.getId()).isEqualTo("a-test-giteapat");
             assertThat(credential.getDescription()).isNullOrEmpty();

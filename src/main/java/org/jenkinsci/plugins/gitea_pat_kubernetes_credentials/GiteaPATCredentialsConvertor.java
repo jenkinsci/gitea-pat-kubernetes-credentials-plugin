@@ -6,7 +6,6 @@ import com.cloudbees.jenkins.plugins.kubernetes_credentials_provider.SecretUtils
 import com.cloudbees.plugins.credentials.CredentialsScope;
 import io.fabric8.kubernetes.api.model.Secret;
 import org.jenkinsci.plugin.gitea.credentials.PersonalAccessTokenImpl;
-import org.jenkinsci.plugin.gitea.credentials.PersonalAccessToken;
 import org.jenkinsci.plugins.variant.OptionalExtension;
 
 import java.nio.ByteBuffer;
@@ -34,7 +33,7 @@ public class GiteaPATCredentialsConvertor extends SecretToCredentialConverter {
         SecretUtils.requireNonNull(secret.getData(), "gitea credential definition contains no data");
         String tokenBase64 = SecretUtils.getNonNullSecretData(secret, "token", "gitea credential is missing token");
         String token = decodeBase64(tokenBase64, "Not a valid token");
-        PersonalAccessToken giteaPATCredentials = new PersonalAccessTokenImpl(
+        PersonalAccessTokenImpl giteaPATCredentials = new PersonalAccessTokenImpl(
                 // Scope
                 CredentialsScope.GLOBAL,
                 // ID
