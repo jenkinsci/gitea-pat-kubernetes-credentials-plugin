@@ -25,11 +25,11 @@ public class GiteaPATCredentialsConvertor extends SecretToCredentialConverter {
 
     @Override
     public boolean canConvert(String type) {
-        return "gitea-pat".equals(type);
+        return "giteaPAT".equals(type);
     }
 
     @Override
-    public GiteaPATCredentials convert(Secret secret) throws CredentialsConvertionException {
+    public PersonalAccessTokenImpl convert(Secret secret) throws CredentialsConvertionException {
         SecretUtils.requireNonNull(secret.getData(), "gitea credential definition contains no data");
         String tokenBase64 = SecretUtils.getNonNullSecretData(secret, "token", "gitea credential is missing token");
         String token = decodeBase64(tokenBase64, "Not a valid token");

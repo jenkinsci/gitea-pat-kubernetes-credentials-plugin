@@ -19,7 +19,7 @@ public class GiteaPATCredentialsConvertorTest {
     @Test
     public void canConvert() {
         GiteaPATCredentialsConvertor convertor = new GiteaPATCredentialsConvertor();
-        assertThat(convertor.canConvert("githubApp")).isTrue();
+        assertThat(convertor.canConvert("giteaPAT")).isTrue();
         assertThat(convertor.canConvert("something")).isFalse();
     }
 
@@ -31,7 +31,7 @@ public class GiteaPATCredentialsConvertorTest {
             assertThat(secret).isNotNull();
             GitHubAppCredentials credential = convertor.convert(secret);
             assertThat(credential).isNotNull();
-            assertThat(credential.getId()).isEqualTo("a-test-githubapp");
+            assertThat(credential.getId()).isEqualTo("a-test-giteapat");
             assertThat(credential.getDescription()).isEqualTo("credentials from Kubernetes");
             assertThat(credential.getAppID()).isEqualTo("12");
             assertThat(credential.getPrivateKey().getPlainText()).isEqualTo("some private key content");
@@ -70,20 +70,6 @@ public class GiteaPATCredentialsConvertorTest {
 
         }
     }
-
-    @Test
-    public void failsToConvertWhenPrivateKeyMissing() throws Exception {
-        GiteaPATCredentialsConvertor convertor = new GiteaPATCredentialsConvertor();
-        try (InputStream is = get("missing-private-key.yaml")) {
-
-            Secret secret = Serialization.unmarshal(is, Secret.class);
-            assertThatThrownBy(() -> convertor.convert(secret))
-                    .isInstanceOf(CredentialsConvertionException.class)
-                    .hasMessage("github app credential is missing privateKey");
-
-        }
-    }
-
 
     private static InputStream get(String resource) {
         InputStream is = GiteaPATCredentialsConvertor.class.getResourceAsStream("GiteaPATCredentialsConvertor/" + resource);
