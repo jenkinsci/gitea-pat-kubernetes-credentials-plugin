@@ -27,6 +27,7 @@
         <workflow.version>711.vdfef37cda_816</workflow.version>
         <assertj.version>3.22.0</assertj.version>
         <kubernetes-credentials-provider.version>0.20</kubernetes-credentials-provider.version>
+        <enforcer.skip>true</enforcer.skip>
     </properties>
 
     <name>Gitea PAT Kubernetes Credentials</name>
@@ -159,27 +160,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
-        <!--       <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                  <execution>
-                    <id>pass</id>
-                    <goals>
-                      <goal>enforce</goal>
-                    </goals>
-                    <configuration>
-                      <rules>
-                        <AlwaysPass/>                
-                      </rules>
-                    </configuration>
-                  </execution>
-                </executions>
-              </plugin>
- -->
         </plugins>
     </build>
 
