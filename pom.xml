@@ -197,6 +197,19 @@
               </rules>
             </configuration>
           </execution>
+      <execution>
+        <goals>
+          <goal>enforce</goal>
+        </goals>
+        <configuration>
+          <rules>
+            <enforceBytecodeVersion>
+              <maxJdkVersion>11</maxJdkVersion>
+            </enforceBytecodeVersion>
+          </rules>
+          <fail>true</fail>
+        </configuration>
+      </execution>
         </executions>
       </plugin>
 
