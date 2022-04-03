@@ -22,7 +22,7 @@
         <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
         <jenkins.version>2.332.1</jenkins.version>
         <gitea.version>1.4.1</gitea.version>
-        <java.level>11</java.level>
+        <java.level>8</java.level>
         <jenkins-test-harness.version>1731.v383b_5d6c3393</jenkins-test-harness.version>
         <workflow.version>711.vdfef37cda_816</workflow.version>
         <assertj.version>3.22.0</assertj.version>
