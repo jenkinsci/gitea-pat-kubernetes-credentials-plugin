@@ -33,7 +33,7 @@ public class GiteaPATCredentialsConvertorTest {
             assertThat(credential).isNotNull();
             assertThat(credential.getId()).isEqualTo("a-test-giteapat");
             assertThat(credential.getDescription()).isEqualTo("credentials from Kubernetes");
-            assertThat(credential.getToken()).isEqualTo("0123456789012345678901234567890123456789");
+            assertThat(credential.getToken().toString()).isEqualTo("0123456789012345678901234567890123456789");
         }
     }
 
@@ -47,19 +47,18 @@ public class GiteaPATCredentialsConvertorTest {
             assertThat(credential).isNotNull();
             assertThat(credential.getId()).isEqualTo("a-test-giteapat");
             assertThat(credential.getDescription()).isNullOrEmpty();
-            assertThat(credential.getToken()).isEqualTo("0123456789012345678901234567890123456789");
-
+            assertThat(credential.getToken().toString()).isEqualTo("0123456789012345678901234567890123456789");
         }
     }
 
     @Test
-    public void failsToConvertWhenAppIdMissing() throws Exception {
+    public void failsToConvertWhenTokenMissing() throws Exception {
         GiteaPATCredentialsConvertor convertor = new GiteaPATCredentialsConvertor();
         try (InputStream is = get("missing-token.yaml")) {
             Secret secret = Serialization.unmarshal(is, Secret.class);
             assertThatThrownBy(() -> convertor.convert(secret))
                     .isInstanceOf(CredentialsConvertionException.class)
-                    .hasMessage("gitea credential is missing token");
+                    .hasMessage("gitea credential is missing token (mapped to token)");
 
         }
     }
