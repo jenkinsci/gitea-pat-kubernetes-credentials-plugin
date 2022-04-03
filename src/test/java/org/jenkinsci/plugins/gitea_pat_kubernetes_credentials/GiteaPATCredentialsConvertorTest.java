@@ -33,7 +33,7 @@ public class GiteaPATCredentialsConvertorTest {
             assertThat(credential).isNotNull();
             assertThat(credential.getId()).isEqualTo("a-test-giteapat");
             assertThat(credential.getDescription()).isEqualTo("credentials from Kubernetes");
-            assertThat(credential.getToken().toString()).isEqualTo("0123456789012345678901234567890123456789");
+            assertThat(credential.getToken()).isEqualTo(hudson.util.Secret.fromString("0123456789012345678901234567890123456789"));
         }
     }
 
@@ -47,7 +47,7 @@ public class GiteaPATCredentialsConvertorTest {
             assertThat(credential).isNotNull();
             assertThat(credential.getId()).isEqualTo("a-test-giteapat");
             assertThat(credential.getDescription()).isNullOrEmpty();
-            assertThat(credential.getToken().toString()).isEqualTo("0123456789012345678901234567890123456789");
+            assertThat(credential.getToken()).isEqualTo(hudson.util.Secret.fromString("0123456789012345678901234567890123456789"));
         }
     }
 
