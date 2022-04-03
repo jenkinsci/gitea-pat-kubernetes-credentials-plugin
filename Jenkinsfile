@@ -15,7 +15,7 @@ spec:
     node(POD_LABEL) {
         container('maven') {
             checkout scm
-            sh 'mvn -B -ntp -Dmaven.test.failure.ignore package'
+            sh 'mvn -B -ntp -Dmaven.test.failure.ignore -Denforcer.skip package'
         }
         junit '**/target/surefire-reports/TEST-*.xml'
         archiveArtifacts '**/target/*.hpi'
