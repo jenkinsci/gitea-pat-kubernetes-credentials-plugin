@@ -15,7 +15,14 @@ spec:
     node(POD_LABEL) {
         container('maven') {
             checkout scm
-            sh 'mvn -B -ntp -Dmaven.test.failure.ignore package'
+            script {
+                if (env.TAG_NAME) {
+                    echo env.TAG_NAME
+                    sh 'mvn -B -ntp -Dmaven.test.failure.ignore -Drevision=${TAG_NAME} -Dchangelist= clean package'
+                } else {
+                    sh 'mvn -B -ntp -Dmaven.test.failure.ignore package'
+                }
+            }
         }
         junit '**/target/surefire-reports/TEST-*.xml'
         archiveArtifacts '**/target/*.hpi'
