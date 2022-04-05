@@ -1,6 +1,9 @@
 // buildPlugin()
 // Replace with above once finalized
-podTemplate(yaml: '''
+pipeline {
+    agent {
+        kubernetes {
+            yaml '''
 apiVersion: v1
 kind: Pod
 spec:
@@ -11,20 +14,35 @@ spec:
     - sleep
     args:
     - infinity
-''') {
-    node(POD_LABEL) {
-        container('maven') {
-            checkout scm
-            script {
-                if (env.TAG_NAME) {
-                    echo env.TAG_NAME
-                    sh 'mvn -B -ntp -Dmaven.test.failure.ignore -Drevision=${TAG_NAME} -Dchangelist= clean package'
-                } else {
-                    sh 'mvn -B -ntp -Dmaven.test.failure.ignore package'
+            '''
+            defaultContainer 'maven'
+        }
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build') {
+            steps {
+                script {
+                    if (env.TAG_NAME) {
+                        echo env.TAG_NAME
+                        sh 'mvn -B -ntp -Dmaven.test.failure.ignore -Drevision=${TAG_NAME} -Dchangelist= clean package'
+                    } else {
+                        sh 'mvn -B -ntp -Dmaven.test.failure.ignore package'
+                    }
                 }
             }
         }
-        junit '**/target/surefire-reports/TEST-*.xml'
-        archiveArtifacts '**/target/*.hpi'
+    }
+    post {
+        always {
+            junit '**/target/surefire-reports/TEST-*.xml'
+        }
+        success {
+            archiveArtifacts '**/target/*.hpi'
+        }
     }
 }
