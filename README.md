@@ -19,3 +19,6 @@ type: Opaque
 stringData:
   token: 0123456789012345678901234567890123456789
 ```
+
+---
+Based on the similar plugin [Github App kubernetes credentials plugin](https://github.com/jenkinsci/github-app-kubernetes-credentials-plugin)
