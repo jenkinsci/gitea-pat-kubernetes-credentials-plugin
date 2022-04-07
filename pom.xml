@@ -18,7 +18,7 @@
     <properties>
         <revision>0.0.2</revision>
         <changelist>-SNAPSHOT</changelist>
-        <gitHubRepo>thisisqasim/gitea-pat-kubernetes-credentials-plugin</gitHubRepo>
+        <gitHubRepo>jenkinsci/gitea-pat-kubernetes-credentials-plugin</gitHubRepo>
         <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
         <jenkins.version>2.332.1</jenkins.version>
         <gitea.version>1.4.1</gitea.version>
@@ -32,7 +32,7 @@
 
     <name>Gitea PAT Kubernetes Credentials</name>
     <description>Gitea Personal Access Token Kubernetes Credentials</description>
-    <url>https://github.com/thisisqasim/${project.artifactId}-plugin</url>
+    <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
     <!-- The default licence for Jenkins OSS Plugins is MIT. Substitute for the applicable one if needed. -->
 
     <licenses>
