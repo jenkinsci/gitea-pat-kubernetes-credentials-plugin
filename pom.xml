@@ -12,11 +12,11 @@
 
     <groupId>io.jenkins.plugins</groupId>
     <artifactId>gitea-pat-kubernetes-credentials</artifactId>
-    <version>0.0.2</version>
+    <version>${revision}${changelist}</version>
     <packaging>hpi</packaging>
 
     <properties>
-        <revision>0.0.2</revision>
+        <revision>0.0.3</revision>
         <changelist>-SNAPSHOT</changelist>
         <gitHubRepo>jenkinsci/gitea-pat-kubernetes-credentials-plugin</gitHubRepo>
         <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
@@ -54,7 +54,7 @@
         <connection>scm:git:git://github.com/${gitHubRepo}.git</connection>
         <developerConnection>scm:git:git@github.com:${gitHubRepo}.git</developerConnection>
         <url>https://github.com/${gitHubRepo}</url>
-        <tag>gitea-pat-kubernetes-credentials-0.0.2</tag>
+        <tag>${scmTag}</tag>
     </scm>
 
     <repositories>
