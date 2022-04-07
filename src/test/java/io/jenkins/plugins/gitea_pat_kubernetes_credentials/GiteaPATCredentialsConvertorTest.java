@@ -1,4 +1,4 @@
-package org.jenkinsci.plugins.gitea_pat_kubernetes_credentials;
+package io.jenkins.plugins.gitea_pat_kubernetes_credentials;
 
 import com.cloudbees.jenkins.plugins.kubernetes_credentials_provider.CredentialsConvertionException;
 import io.fabric8.kubernetes.api.model.Secret;
