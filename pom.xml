@@ -12,11 +12,11 @@
 
     <groupId>io.jenkins.plugins</groupId>
     <artifactId>gitea-pat-kubernetes-credentials</artifactId>
-    <version>0.0.3</version>
+    <version>${revision}${changelist}</version>
     <packaging>hpi</packaging>
 
     <properties>
-        <revision>0.0.3</revision>
+        <revision>0.0.4</revision>
         <changelist>-SNAPSHOT</changelist>
         <gitHubRepo>jenkinsci/gitea-pat-kubernetes-credentials-plugin</gitHubRepo>
         <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
